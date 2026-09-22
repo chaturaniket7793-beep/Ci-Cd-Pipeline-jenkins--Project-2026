@@ -1,48 +1,223 @@
-# 🚀 Java CI/CD Pipeline with Jenkins, Docker, Docker Hub & Kubernetes
+# Java CI/CD with Jenkins, Docker & Kubernetes
 
-![Java](https://img.shields.io/badge/Java-17+-orange?logo=openjdk)
-![Maven](https://img.shields.io/badge/Maven-Build-red?logo=apachemaven)
-![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-blue?logo=jenkins)
-![Docker](https://img.shields.io/badge/Docker-Containerization-blue?logo=docker)
-![Docker Hub](https://img.shields.io/badge/Docker%20Hub-Registry-2496ED?logo=docker)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestration-326CE5?logo=kubernetes)
-![AWS](https://img.shields.io/badge/AWS-EC2-orange?logo=amazonaws)
-![GitHub](https://img.shields.io/badge/GitHub-Source%20Control-black?logo=github)
+A simple end-to-end DevOps project that builds a Java application with Maven, creates a Docker image, pushes it to Docker Hub, and deploys it to Kubernetes on AWS EC2.
 
-> A complete hands-on DevOps CI/CD project demonstrating how a Java application moves from GitHub source code through Jenkins, Maven, Docker, Docker Hub and finally into a Kubernetes cluster running on AWS EC2.
-
----
-
-# 📌 Project Overview
-
-This project implements an end-to-end CI/CD pipeline for a Java application.
-
-The development environment is a **Windows PC** running:
-
-* VS Code
-* Git
-* Docker Desktop
-* Jenkins container
-
-Jenkins performs the CI/CD automation.
-
-Maven build and test operations are executed using a **Docker-based Maven agent**, rather than requiring Maven to be permanently installed inside the Jenkins controller container.
-
-The final Docker image is pushed to Docker Hub and deployed to a Kubernetes cluster running on AWS EC2.
-
----
-
-# 🏗️ Target Architecture
+## Architecture
 
 ```text
-                         WINDOWS PC
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   VS Code                                                   │
-│      │                                                      │
-│      │ git push                                             │
-│      ▼                                                      │
-│   ┌───────────────┐                                         │
-│   │    GitHub     │                                         │
-│   │ Source Code   │
+VS Code
+   │
+   │ git push
+   ▼
+GitHub
+   │
+   ▼
+Jenkins
+(Docker Desktop)
+   │
+   ├── Maven Build
+   ├── Maven Test
+   ├── Docker Build
+   └── Docker Push
+          │
+          ▼
+      Docker Hub
+          │
+          ▼
+       AWS EC2
+     Kubernetes
+          │
+      ┌───┴───┐
+      ▼       ▼
+    Pod 1   Pod 2
+      └───┬───┘
+          ▼
+       Service
+       NodePort
+          │
+          ▼
+       Browser
 ```
+
+## Technologies
+
+* Java 17
+* Maven
+* Git & GitHub
+* Jenkins
+* Docker Desktop
+* Docker Hub
+* Kubernetes
+* AWS EC2
+
+## Project Structure
+
+```text
+java-jenkins-docker/
+│
+├── src/
+├── k8s/
+│   └── deployment.yaml
+├── pom.xml
+├── Dockerfile
+├── Jenkinsfile
+└── README.md
+```
+
+## CI/CD Flow
+
+```text
+Git Push
+   ↓
+Jenkins
+   ↓
+Maven Build
+   ↓
+Maven Test
+   ↓
+Docker Build
+   ↓
+Docker Hub
+   ↓
+Kubernetes
+   ↓
+Pods
+   ↓
+Service
+   ↓
+Browser
+```
+
+## Maven
+
+Build:
+
+```bash
+mvn clean package
+```
+
+Test:
+
+```bash
+mvn test
+```
+
+## Docker
+
+Build:
+
+```bash
+docker build -t YOUR_DOCKER_USERNAME/java-jenkins-docker:latest .
+```
+
+Run:
+
+```bash
+docker run java-jenkins-docker:latest
+```
+
+## Kubernetes
+
+The `k8s/deployment.yaml` file contains both:
+
+* Deployment
+* Service
+
+Apply both with one command:
+
+```bash
+kubectl apply -f k8s/deployment.yaml
+```
+
+Check Pods:
+
+```bash
+kubectl get pods
+```
+
+Check Service:
+
+```bash
+kubectl get svc
+```
+
+## Browser Access
+
+The Kubernetes Service uses **NodePort**.
+
+```text
+Browser
+   ↓
+http://EC2-PUBLIC-IP:NODEPORT
+   ↓
+Kubernetes Service
+   ↓
+Pod
+   ↓
+Java Application
+```
+
+Example:
+
+```text
+http://<EC2-PUBLIC-IP>:30080
+```
+
+Make sure the EC2 Security Group allows the NodePort.
+
+## Jenkins Pipeline
+
+The Jenkins pipeline will perform:
+
+```text
+Checkout
+   ↓
+Maven Build
+   ↓
+Maven Test
+   ↓
+Docker Build
+   ↓
+Docker Push
+   ↓
+Kubernetes Deploy
+```
+
+## Jenkins Credentials
+
+Store credentials in Jenkins, not in GitHub.
+
+```text
+Docker Hub credentials
+Kubernetes credentials
+```
+
+Never commit passwords, tokens, or kubeconfig files.
+
+## Project Goal
+
+The final goal is:
+
+```text
+GitHub
+   ↓
+Jenkins
+   ↓
+Maven
+   ↓
+Docker
+   ↓
+Docker Hub
+   ↓
+AWS EC2
+   ↓
+Kubernetes
+   ↓
+Pod 1 + Pod 2
+   ↓
+NodePort
+   ↓
+Browser
+```
+
+This project is for hands-on DevOps and CI/CD practice.
