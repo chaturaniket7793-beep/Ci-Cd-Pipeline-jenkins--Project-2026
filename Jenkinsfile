@@ -2,17 +2,16 @@ pipeline {
 
     agent any
 
+    tools {
+        jdk 'JDK17'
+        maven 'Maven-3.9'
+    }
+
     environment {
         DOCKER_IMAGE = "aniketchatur/java-pipeline-repo:latest"
     }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
 
         stage('Maven Build') {
             steps {
