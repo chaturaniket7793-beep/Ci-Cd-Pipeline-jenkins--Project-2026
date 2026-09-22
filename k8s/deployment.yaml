@@ -44,7 +44,9 @@ spec:
     spec:
       containers:
         - name: java-app
-          image: YOUR_DOCKER_USERNAME/java-jenkins-docker:latest
+
+          image: aniketchatur/java-pipeline-repo:latest
+
           imagePullPolicy: Always
 
           ports:

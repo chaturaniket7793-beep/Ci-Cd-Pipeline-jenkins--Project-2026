@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "YOUR_DOCKER_USERNAME/java-jenkins-docker"
+        DOCKER_IMAGE = "aniketchatur/java-pipeline-repo:latest"
     }
 
     stages {
@@ -28,7 +28,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t ${DOCKER_IMAGE}:latest .'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
@@ -36,15 +36,14 @@ pipeline {
             steps {
                 withCredentials([
                     usernamePassword(
-                        credentialsId: 'dockerhub-credentials',
+                        credentialsId: 'java-pipeline-123',
                         usernameVariable: 'DOCKER_USERNAME',
                         passwordVariable: 'DOCKER_PASSWORD'
                     )
                 ]) {
-
                     sh '''
                         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-                        docker push ${DOCKER_IMAGE}:latest
+                        docker push "$DOCKER_IMAGE"
                         docker logout
                     '''
                 }
@@ -56,10 +55,16 @@ pipeline {
                 sh 'kubectl apply -f k8s/deployment.yaml'
             }
         }
+
+        stage('Kubernetes Verify') {
+            steps {
+                sh 'kubectl get pods'
+                sh 'kubectl get svc'
+            }
+        }
     }
 
     post {
-
         success {
             echo 'CI/CD Pipeline completed successfully!'
         }
