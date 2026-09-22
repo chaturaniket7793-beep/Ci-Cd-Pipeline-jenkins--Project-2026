@@ -1,0 +1,51 @@
+# ---------------------------------------
+# Service
+# ---------------------------------------
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: java-jenkins-service
+
+spec:
+  type: NodePort
+
+  selector:
+    app: java-jenkins-app
+
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30080
+
+---
+# ---------------------------------------
+# Deployment
+# ---------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: java-jenkins-app
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: java-jenkins-app
+
+  template:
+    metadata:
+      labels:
+        app: java-jenkins-app
+
+    spec:
+      containers:
+        - name: java-app
+          image: YOUR_DOCKER_USERNAME/java-jenkins-docker:latest
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
