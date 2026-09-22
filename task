@@ -1,0 +1,23 @@
+# Java CI/CD Pipeline with Jenkins, Docker & Kubernetes
+
+## Practical Steps
+
+1. Create Java Maven project
+2. Create `pom.xml`
+3. Develop Java application
+4. Create `Dockerfile`
+5. Create Kubernetes `deployment.yaml`
+6. Push source code to GitHub
+7. Configure Jenkins Pipeline
+8. Configure JDK 17 and Maven
+9. Checkout code from GitHub
+10. Run Maven Build
+11. Run Maven Test
+12. Build Docker Image
+13. Push Docker Image to Docker Hub
+14. Connect Jenkins to Kubernetes on AWS EC2
+15. Deploy application to Kubernetes
+16. Verify Kubernetes Nodes, Pods and Service
+17. Expose application using NodePort
+18. Test application through browser
+19. Verify complete CI/CD pipeline
