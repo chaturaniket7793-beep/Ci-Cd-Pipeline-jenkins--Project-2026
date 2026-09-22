@@ -3,6 +3,9 @@
 A simple end-to-end DevOps project that builds a Java application with Maven, creates a Docker image, pushes it to Docker Hub, and deploys it to Kubernetes on AWS EC2.
 
 ## Architecture
+<img width="946" height="627" alt="image" src="https://github.com/user-attachments/assets/858c155e-97b9-4d5d-afc2-b11779ea69a7" />
+
+
 
 ```text
 VS Code
